@@ -3,8 +3,12 @@ import mediapipe as mp
 import time
 import math
 import numpy as np
+import drivers
+import RPi.GPIO as GPIO
+display = drivers.Lcd()
+display.lcd_clear()
 
-
+bar_repr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 class poseDetector():
 
     def __init__(self, static_image_mode: bool = False,
@@ -82,6 +86,8 @@ class poseDetector():
 
 
 def main():
+    display.lcd_display_string("AiFitnessTrainer", 1)
+    time.sleep(2)
     def bicepCurls():
 
         cap = cv2.VideoCapture(0)
@@ -123,8 +129,7 @@ def main():
 
 
 
-                cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15,
-                                (255, 0, 0), 25)
+                display.lcd_display_string(str(int(count)), 2)
 
 
 
@@ -165,8 +170,7 @@ def main():
                         count += 0.5
                         dir = 0
 
-                cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15,
-                            (255, 0, 0), 25)
+                display.lcd_display_string(str(int(count)), 2)
 
             cv2.imshow("Image", img)
             cv2.waitKey(1)
@@ -204,18 +208,26 @@ def main():
                         count += 0.5
                         dir = 0
 
-                cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15,
-                            (255, 0, 0), 25)
+                display.lcd_display_string(str(int(count)), 2)
 
             cv2.imshow("Image", img)
             cv2.waitKey(1)
     time.sleep(2)
+    display.lcd_clear()
+    display.lcd_display_string("Bicep Curls", 1)
     bicepCurls()
+    display.lcd_clear()
     time.sleep(2)
-    print("SideRaise")
+    
+    display.lcd_display_string("Side Raise", 1)
     sideRaise()
+    
+    display.lcd_clear()
     time.sleep(2)
+    display.lcd_display_string("Tricep Extension", 1)
     tricepExtention(12,14,16)
+    
+    display.lcd_clear()
     time.sleep(2)
 
 if __name__ == "__main__":
